@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.11.11",
+    "@mui/icons-material": "^5.11.11",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^4.9.5"
+  },
+  "description": "Metacommerce-React-junior-task",
+  "devDependencies": {
+    "react-scripts": "^5.0.1"
+  },
+  "main": "index.tsx",
+  "scripts": {
+    "start": "react-scripts start"
+  }
+}
