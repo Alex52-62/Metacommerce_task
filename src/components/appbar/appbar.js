@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState }  from "react";
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -13,6 +14,8 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
 import SearchIcon from '@mui/icons-material/Search';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+import BasicModal from '../modal/modal';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -65,9 +68,25 @@ const darkTheme = createTheme({
     },
   });
 
-export default function SearchAppBar() {
+export default function SearchAppBar({ onChange }) {
+  const [open, setOpen] = useState(false);
+
+  const [showArrow, setShowArrow] = useState(true);
+
+  const [show, setShow] = useState('hidden');
+
+  const toggleShowArrow = () => {
+    showArrow ? setShow('visible') : setShow('hidden');
+    onChange(showArrow);
+    setShowArrow(!showArrow);
+  };
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
+      <BasicModal handleModalClose={handleClose} open={open}/>
     <ThemeProvider theme={darkTheme}>
     <AppBar position="static">
         <Toolbar>
@@ -78,16 +97,28 @@ export default function SearchAppBar() {
             color="inherit"
             aria-label="open drawer"
             sx={{ mr: 2 }}
+            onClick={toggleShowArrow}
           >
-            <FormatListBulletedIcon sx={{p:2}}/>
-            <GridViewIcon/>
-            <ArrowBackIosIcon sx={{ display: 'none' }}/>
-            <DeleteIcon sx={{ ml: 27 }}/>
+              <FormatListBulletedIcon sx={{p:2}}/>
+            </IconButton>
+
+            <IconButton onClick={toggleShowArrow}>
+              <GridViewIcon type="button" />
+            </IconButton>
+
+            <IconButton>
+              <ArrowBackIosIcon sx={{ ml: 4 , visibility: show }}/>
+            </IconButton>
+            
+            <IconButton onClick={handleOpen}>
+              <DeleteIcon sx={{ ml: 22 }}/>
+            </IconButton>
+
             <OpenInNewIcon sx={{ ml: 4 }}/>
             <FormatAlignCenterIcon sx={{ ml: 20 }}/>
 
 
-          </IconButton>
+
 
           <Search >
             <SearchIconWrapper >

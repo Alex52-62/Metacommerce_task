@@ -1,18 +1,14 @@
 import * as React from 'react';
+import { useState }  from "react";
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { v4 as uuidv4 } from 'uuid';
+
 import SearchAppBar from '../appbar/appbar.js'
-
-
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  height: 250,
-  lineHeight: '60px',
-}));
+import ContentWindow from '../contentWindow/contentWindow.js';
 
 const darkTheme = createTheme({ palette: { mode: 'dark' } });
 const initialArray = [0,0,0,0,0,0,0,0];
@@ -21,9 +17,20 @@ const list = { md: 'repeat(1, 0.25fr)' };
 
 
 export default function App() {
+  const [value, setValue] = useState(list);
+  const [content, setContent] = useState("");
+
+  const handleChange = (value) => {
+    value === true ? setValue(tile) : setValue(list);
+  }
+
+  const handleInput = (e) => {
+    setContent(e.target.value);
+  }
+
   return (
     <>
-    <SearchAppBar/>
+    <SearchAppBar onChange={handleChange}/>
 
     <Grid >
       {[darkTheme].map((theme, index) => (
@@ -34,21 +41,38 @@ export default function App() {
                 p: 2,
                 bgcolor: '#212326',
                 display: 'grid',
-                gridTemplateColumns:  tile ,
+                gridTemplateColumns:  value  ,
                 gap: 2,
               }}
             >
               {initialArray.map((initialArray, index) => (
-                <Item 
-                  key={index} 
-                  elevation={0}
-                  sx={{
-                    border: '1px solid #444242',
-                  }}
-                  >
-                  {`cardContent=${initialArray}`}
-                </Item>
+                    <IconButton key={index} >
+                    <TextField
+                      variant="standard"
+                      InputProps={{ disableUnderline: true }}
+                      id="standart-multiline-flexible"
+                      key={index} 
+                      elevation={0}
+                      sx={{
+                        '&:active': {
+                          border: '2px solid #FBB728',
+                        },
+                        ':hover': {
+                          background: '#464646',
+                        },
+                        border: '1px solid #444242',
+                        borderRadius: '5px',
+                        minHeight: '300px',
+                        minWidth: '300px',
+                      }}
+                      multiline
+                      maxRows={12}
+                      onChange={handleInput}
+                    />   
+
+                    </IconButton>
               ))}
+            <ContentWindow key={uuidv4()} content={content}/> 
             </Box>
           </ThemeProvider>
         </Grid>
